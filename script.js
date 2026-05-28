@@ -29,8 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
         startPresentation();
     });
 
+    let isPresentationActive = false;
+
     function startPresentation() {
         startTime = Date.now();
+        isPresentationActive = true;
 
         // Show first slide
         document.getElementById(`slide-1`).classList.remove('hidden');
@@ -41,6 +44,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Change slides based on exact timing
         presentationInterval = setInterval(checkSlideProgression, 100);
     }
+
+    document.addEventListener('keydown', (e) => {
+        if (!isPresentationActive) return;
+
+        if (e.key === 'ArrowRight' && currentSlide < SLIDES_COUNT) {
+            transitionToSlide(currentSlide + 1);
+            // Adjust start time to keep progress bar and auto-progression in sync
+            startTime = Date.now() - ((currentSlide - 1) * SLIDE_DURATION * 1000);
+        } else if (e.key === 'ArrowLeft' && currentSlide > 1) {
+            transitionToSlide(currentSlide - 1);
+            // Adjust start time to keep progress bar and auto-progression in sync
+            startTime = Date.now() - ((currentSlide - 1) * SLIDE_DURATION * 1000);
+        }
+    });
 
     function updateProgress() {
         const elapsed = (Date.now() - startTime) / 1000; // in seconds
@@ -60,13 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elapsed >= TOTAL_DURATION) {
             // End of presentation, show credits
             clearInterval(presentationInterval);
+            isPresentationActive = false;
             showCredits();
             return;
         }
 
         const expectedSlide = Math.floor(elapsed / SLIDE_DURATION) + 1;
 
-        if (expectedSlide > currentSlide && expectedSlide <= SLIDES_COUNT) {
+        if (expectedSlide !== currentSlide && expectedSlide <= SLIDES_COUNT) {
             transitionToSlide(expectedSlide);
         }
     }
