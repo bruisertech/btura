@@ -184,7 +184,7 @@ h1, h2, h3 {
 
 .large-list li {
     margin-bottom: 1rem;
-    padding-left: 2rem;
+    padding-left: 3.5rem;
     position: relative;
 }
 
@@ -202,7 +202,7 @@ h1, h2, h3 {
 
 /* Image Box */
 .image-box {
-    flex: 1.5;
+    flex: 2;
     height: 100%;
     overflow: hidden;
     border-radius: 20px;
