@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let startTime;
     let presentationInterval;
     let progressInterval;
+    let imageToggleInterval;
 
     startBtn.addEventListener('click', () => {
         // Hide overlay
@@ -43,6 +44,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Change slides based on exact timing
         presentationInterval = setInterval(checkSlideProgression, 100);
+
+        // Toggle images every 3 seconds
+        imageToggleInterval = setInterval(toggleSlideImages, 3000);
+    }
+
+    function toggleSlideImages() {
+        const currentSlideEl = document.getElementById(`slide-${currentSlide}`);
+        if (!currentSlideEl) return;
+
+        const images = currentSlideEl.querySelectorAll('.massive-img');
+        if (images.length < 2) return;
+
+        // Find currently active image
+        let activeIndex = -1;
+        images.forEach((img, index) => {
+            if (img.classList.contains('active-img')) {
+                activeIndex = index;
+            }
+        });
+
+        // If none is active for some reason, default to 0
+        if (activeIndex === -1) activeIndex = 0;
+
+        // Toggle active class to the next image
+        images[activeIndex].classList.remove('active-img');
+        const nextIndex = (activeIndex + 1) % images.length;
+        images[nextIndex].classList.add('active-img');
     }
 
     document.addEventListener('keydown', (e) => {
@@ -96,6 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showCredits() {
+        // Stop image toggling
+        clearInterval(imageToggleInterval);
+
         // Hide all current slides
         for (let i = 1; i <= SLIDES_COUNT; i++) {
             const slide = document.getElementById(`slide-${i}`);

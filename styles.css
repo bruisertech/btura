@@ -131,7 +131,8 @@ h1, h2, h3 {
 
 /* Text Box */
 .text-box {
-    flex: 1;
+    flex: none;
+    width: 35%;
     background-color: var(--light-bg);
     padding: 3rem;
     border-radius: 20px;
@@ -162,6 +163,7 @@ h1, h2, h3 {
     text-transform: uppercase;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .subtitle {
@@ -202,12 +204,14 @@ h1, h2, h3 {
 
 /* Image Box */
 .image-box {
-    flex: 2;
+    flex: none;
+    width: 65%;
     height: 100%;
     overflow: hidden;
     border-radius: 20px;
     border: 8px solid white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    position: relative;
 }
 
 .image-box.full-width {
@@ -220,6 +224,15 @@ h1, h2, h3 {
     height: 100%;
     object-fit: cover;
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.massive-img.active-img {
+    opacity: 1;
 }
 
 .cocadas-img {
